@@ -22,6 +22,7 @@
         <link type="text/css" href="<?= base_url() ?>/assets/css/rocket.css" rel="stylesheet" />
         <script src="<?=base_url()?>/node_modules/eruda/eruda.js"></script>
         <script>eruda.init();</script>
+        <?= $this->renderSection('styles') ?> 
     </head>
     <body>
       <div class="preloader bg-soft flex-column justify-content-center align-items-center">

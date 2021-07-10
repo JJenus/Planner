@@ -36,6 +36,10 @@ class PlanController extends Controller
 		$this->setupAuthClasses();
 	}
 	
+	public function index(){
+	  $this->getPlans();
+	}
+	
 	public function addToCart(){
 	  $cart = service('cart');
 	  if(isset($_POST['addToCart'])){
@@ -77,7 +81,7 @@ class PlanController extends Controller
     $this->reply (json_encode($res));
 	}
 	
-  public function savePlan(){
+  public function save(){
     if(!$this->auth->check()){
       return $this->reply(
         json_encode([
@@ -184,14 +188,23 @@ class PlanController extends Controller
     $this->reply(json_encode($res));
   } 
   
-  public function viewPlan($id){
-    $n_id = (new Encryptor())->decode($id);
-    $plan = (model ('PlanModel'))->where('id = ', $n_id);
+  public function plans($id = "all"){
+    if ($id == "all") {
+      return $this->getPlans();
+    }
+    $decripted_id = (new Encryptor())->decode($id);
+    $plan = (model ('PlanModel'))->getPlan($decripted_id);
+    
+    if (!$plan) {
+      throw new \CodeIgniter\Exceptions\PageNotFoundException("Plan $id was not found.");   
+    }
+    
     $plan->loadProperties();
     
     $data = [
       'config' => $this->config, 
-      'plan' => $plan
+      'plan' => $plan, 
+      "auth" => service('authentication')
     ];
     
     return view('pages/plan_view', $data);
@@ -201,43 +214,18 @@ class PlanController extends Controller
     $this->setupAuthClasses();
     helper('auth'); 
     $user = user();
+    $pager = service("pager");
     $plansModel = model("PlanModel");
-    $limit =  intval( $this->request->getPost("limit")) ;
-    $begin = intval($this->request->getPost("begin"));
     
-    if (!isset($limit) || !isset($begin)) {
-      $output = json_encode(
-        array(
-          "status" => false,
-          "data" => [
-            "limit" => $limit, 
-            "offset" => $begin
-           ], 
-          "error" => [
-            "report" => "limit or offset is not set" 
-          ]
-        ) 
-      );
-      
-      return $this->reply($output); 
-    }
+    $plans = $plansModel->paginate(10);
     
-    $offset = "LIMIT ". ($begin > 0 ? $begin.",".$limit : "". $limit) ;
-    
-    $plans = $plansModel->db->query("SELECT * from plan ORDER BY created_at DESC ". $offset)->getResult('array');
-    
-    foreach ($plans as $key => $val) {
-      $plan = (new Plan($val))->loadProperties();
-      $plans[$key]['images'] = $plan->images;
-      $plans[$key]['infos'] = [];
-      foreach($plan->infos as $info){
-        $plans[$key]['infos'][$info['name']] = $info['value'];
-      } 
+    foreach ($plans as $key => $plan) {
+      $plans[$key]->loadProperties();
     }
   
     
     if(count($plans) < 1)
-      $report = "No plan was found";
+      $report = "No plan was found Limit: ".$begin;
     else{
       $report = count($plans). " plan(s) were retrieved";
     }
@@ -255,6 +243,7 @@ class PlanController extends Controller
     
     $this->reply($output);
   }
+  
   # END OF CONTROLLER 
   public function fbInsert(){
     $money = Money::of(108.98, 'USD');

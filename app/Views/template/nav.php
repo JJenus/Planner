@@ -20,16 +20,19 @@
                         </div>
                     </div>
                 </div>
-                <ul class="navbar-nav navbar-nav-hover justify-content-center">
+                <ul class="navbar-nav mb-3 mb-md-0  navbar-nav-hover justify-content-center">
                     <li class="nav-item">
                       <a href="<?= base_url() ?>/" class="nav-link">Home</a>
                     </li>
-                    <li class="nav-item">
-                      <a href="<?= base_url() ?>/login" class="nav-link">Login</a>
-                    </li>
-                    <li class="nav-item">
-                      <a href="<?= base_url() ?>/register" class="nav-link">Register</a>
-                    </li>
+                    <?php if (!$auth->check()): ?>
+                      <!-- code... -->
+                      <li class="nav-item">
+                        <a href="<?= base_url() ?>/login" class="nav-link">Login</a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="<?= base_url() ?>/register" class="nav-link">Register</a>
+                      </li>
+                    <?php endif; ?>
                     <li class="nav-item">
                       <a href="<?= base_url() ?>/designs" class="nav-link">Designs</a>
                     </li>
@@ -40,6 +43,10 @@
                       <a href="<?= base_url() ?>/contact" class="nav-link">Contact</a>
                     </li>
                 </ul>
+                <?php if ($auth->check()): ?>
+                  <!-- code... -->
+                  <a href="<?=base_url()?>/logout" class="btn mt-auto btn-block btn-pill btn-warning">logout</a>
+                <?php endif; ?>
             </div>
            <div class="d-flex d-lg-none align-items-center ml-auto">
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar_global" aria-controls="navbar_global" aria-expanded="false" aria-label="Toggle navigation">

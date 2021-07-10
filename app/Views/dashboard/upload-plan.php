@@ -15,15 +15,15 @@
     
     function readURL(input) {
         if (input.files && input.files[0]) {
-            var reader = new FileReader();
+          var reader = new FileReader();
 
-            reader.onload = function (e) {
-              var str = '#img'+imgIndex+', #thumb'+imgIndex;
-              $(str).attr('src', e.target.result)
-              $(str).removeClass('d-none')
-            };
+          reader.onload = function (e) {
+            var str = '#img'+imgIndex+', #thumb'+imgIndex;
+            $(str).attr('src', e.target.result)
+            $(str).removeClass('d-none')
+          };
 
-            reader.readAsDataURL(input.files[0]);
+          reader.readAsDataURL(input.files[0]);
         }
     }
     
@@ -167,7 +167,7 @@
             </ol>
         </nav>
         <h2 class="h4">Upload New Plan</h2>
-        <p class="mb-0">Your web analytics dashboard template.</p>
+        <p class="mb-0">Upload a plan with at least 3 images.</p>
     </div>
     <div class="btn-toolbar mb-2 mb-md-0">
         <div id="export-buttons" class="btn-group"></div>

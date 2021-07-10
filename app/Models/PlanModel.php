@@ -14,10 +14,10 @@ class planModel extends Model
     public $sponsor;
 
     protected $returnType = plan::class;
-   # protected $useSoftDeletes = true;
+    # protected $useSoftDeletes = true;
     
     protected $allowedFields = [
-        'user_id', 'category', 'dimension', 'cost'
+      'user_id', 'category', 'dimension', 'cost'
     ];
     
 
@@ -32,8 +32,6 @@ class planModel extends Model
     protected $skipValidation = false;
 
     # protected $afterInsert = ['startplan'];
-    
-    
     
     /*
       * $query = $this->db->query("SELECT * FROM date_data ORDER BY id DESC LIMIT 1");
@@ -51,13 +49,17 @@ class planModel extends Model
       $this->getplan()->assignToUsers() ;
     } 
     
-    public function getPlan(){
+    public function getPlans(){
       $plan = $this->db
         ->query(
           "SELECT * FROM plans where sponsor=".$this->sponsor." Order By created_at DESC limit 1"
         )->getRow(0, $this->returnType);
       
       return $plan;
+    }
+    
+    public function getPlan($id){
+      return $this->where("id", $id)->get()->getResult($this->returnType)[0];
     }
     
 } 

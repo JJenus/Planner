@@ -38,31 +38,28 @@ $routes->setAutoRoute(true);
 $routes->get('/', 'Home::index');
 $routes->get('home', 'Home::index');
 
-
-$routes->group('plan', function($route){
-  $route->match(
-   ['get', 'post'],
-   'saveplan', 
-   'PlanController::savePlan' 
+$routes->group('plans', function($route){
+ $route->get('/', 'PlanController::getPlans');
+ 
+ $route->match(
+   ['post'],
+   'save', 
+   'PlanController::save' 
   );
   
   $route->match(
-   ['get', 'post'],
+   ['post'],
    'savefiles', 
    'PlanController::processImages' 
   );
   
   $route->match(
-   ['get', 'post'],
-   'get', 
-   'PlanController::getPlans' 
-  );
-  
-  $route->match(
-   ['get', 'post'],
+   ['post'],
    'add-to-cart', 
    'PlanController::addToCart' 
   );
+  
+  $route->get("(:segment)", "PlanController::plans/$1");
 });
 
 ### AUTH ROUTES

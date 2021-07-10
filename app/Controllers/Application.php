@@ -29,24 +29,15 @@ class Application extends Controller
 		
 		helper('auth'); 
 		
-		if (session("account_path") !== null) {
-		  $this->path = $this->section("account_path") ;
-		} else {
-		  if (in_groups('sponsor')) {
-  		  $this->path = "admin";
-  		} else if(in_groups('member')){
-  		  $this->path = "App";
-  		} 
-		}
-		
     /*$this->user = user();
     $this->user->getRoles();
     $this->user->getPermissions();*/
   }
   
   public function index(){
-    
+    helper('auth');  
     $data = [
+      'user' => user(), 
       'config' => $this->config,
       'auth' => $this->auth,
     ]; 
@@ -87,18 +78,7 @@ class Application extends Controller
 	    return view('admin/'. $page, $data);
   } 
   
-  public function user(){
-    $output = json_encode(
-      array(
-        "status" => "ok", 
-        "report" => "Successful data fetch",
-        "data" => $this->user
-      ) 
-    );
-    
-    $this->reply($output);
-  }
-  
+ 
   private function reply ($output){
     $response = service('response');
     $response->setStatusCode(Response::HTTP_OK);

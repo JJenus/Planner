@@ -91,7 +91,7 @@
                <!-- ARCHITECTURAL DESIGNS-->
               <div id="plans" class="app">
                 <div class="row mb-3">
-                  <design v-for="plan in plans"  :plan="plan"  ></design>
+                  <plans v-for="design in plans" :plan="design" ></plans>
                 </div>
                 
                 <div align="center" class="mt-3 mb-4">
@@ -101,6 +101,7 @@
                 </div>
               </div>
               
+              <!-- OTHER INFORMATIONS -->
               <div class="row">
                   <div class="col-12 col-md-6 col-lg-4 mb-4">
                       <div class="card border-light p-4">

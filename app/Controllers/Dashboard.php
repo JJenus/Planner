@@ -118,7 +118,7 @@ class Dashboard extends Controller
       $this->reply($output);
     } 
     
-    private function reply ($output){
+  private function reply ($output){
     $response = service('response');
     $response->setStatusCode(Response::HTTP_OK);
     $response->setBody($output);

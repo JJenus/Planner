@@ -31,21 +31,29 @@
               </div>
               <div class="card-body pb-0 mt-n5">
                   <h5 class="card-title">
-                    Luxury Amanda 
+                    <?= $user->fullname ?>
                     <small id="edit-data" class="toggleEdit btn-link"><i class="fas fa-pen ml-2"></i></small>
                   </h5>
                   <p class="card-text text-left my-2 mb-3">
                     <span class="mb-1 d-block">
                       <i class="fa fa-envelope mr-2"></i>
-                      247support@yohplanner.org
+                      <?= $user->email ?>
                     </span>
                     <span class="mb-1 d-block">
                       <i class="fa fa-globe mr-2"></i>
-                      USA
+                      <?php if ($user->country ): ?>
+                        <?= $user->country ?>
+                      <?php else: ?>
+                        Location unknown
+                      <?php endif; ?>
                     </span>
                     <span class="mb-1 d-block">
                       <i class="fa mr-2 fa-map-marker"></i>
-                      1AD Huston, Washington DC 
+                      <?php if ($user->address ): ?>
+                        <?= $user->address ?>
+                      <?php else: ?>
+                        Address unknown
+                      <?php endif; ?>
                     </span>
                   </p>
                   <button id="back-btn" class="btn d-none mb-3 toggleEdit btn-warning btn-block">
